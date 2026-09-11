@@ -127,14 +127,32 @@ function saveStudent(studentData) {
 
   } else {
 
-    const newStudent = {
-      id: Date.now(),
-      ...studentData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+  const duplicateStudent = students.value.some(
+    student => student.studentId.trim().toLowerCase() ===
+      studentData.studentId.trim().toLowerCase()
+  )
 
-    students.value.push(newStudent)
+  if (duplicateStudent) {
+    showSuccessMessage(
+      'Student ID already exists. Please use a different Student ID.'
+    )
+    return
+  }
+
+  const newStudent = {
+    id: Date.now(),
+    ...studentData,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+
+  students.value.push(newStudent)
+
+  saveToLocalStorage()
+
+  showSuccessMessage(
+    'Student record added successfully.'
+  )
 
     saveToLocalStorage()
 
