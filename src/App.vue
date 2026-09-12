@@ -146,19 +146,13 @@ function saveStudent(studentData) {
     updatedAt: new Date().toISOString()
   }
 
-  students.value.push(newStudent)
+students.value.push(newStudent)
 
-  saveToLocalStorage()
+saveToLocalStorage()
 
-  showSuccessMessage(
-    'Student record added successfully.'
-  )
-
-    saveToLocalStorage()
-
-    showSuccessMessage(
-      'Student record added successfully.'
-    )
+showSuccessMessage(
+  'Student record added successfully.'
+)
   }
 }
 

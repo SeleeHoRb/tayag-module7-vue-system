@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import StudentForm from '../src/components/StudentForm.vue'
+import StudentList from '../src/components/StudentList.vue'
 import App from '../src/App.vue'
 
 describe('School Management System', () => {
@@ -151,4 +152,77 @@ it('should prevent adding a student with a duplicate Student ID', async () => {
   expect(savedStudents).toHaveLength(1)
   expect(savedStudents[0].studentId).toBe('2026-001')
 })
+  it('should show only Active students when the Active filter is selected', async () => {
+    const students = [
+      {
+        id: 1,
+        studentId: '2026-001',
+        firstName: 'Juan',
+        lastName: 'Dela Cruz',
+        gradeLevel: 'Grade 7',
+        section: 'A',
+        status: 'Active'
+      },
+      {
+        id: 2,
+        studentId: '2026-002',
+        firstName: 'Maria',
+        lastName: 'Santos',
+        gradeLevel: 'Grade 8',
+        section: 'B',
+        status: 'Inactive'
+      }
+    ]
+
+    const wrapper = mount(StudentList, {
+      props: {
+        students
+      }
+    })
+
+    await wrapper.find('#statusFilter').setValue('Active')
+
+    const rows = wrapper.findAll('tbody tr')
+
+    expect(rows).toHaveLength(1)
+    expect(rows[0].text()).toContain('Juan Dela Cruz')
+    expect(rows[0].text()).not.toContain('Maria Santos')
+  })
+
+  it('should show only Inactive students when the Inactive filter is selected', async () => {
+    const students = [
+      {
+        id: 1,
+        studentId: '2026-001',
+        firstName: 'Juan',
+        lastName: 'Dela Cruz',
+        gradeLevel: 'Grade 7',
+        section: 'A',
+        status: 'Active'
+      },
+      {
+        id: 2,
+        studentId: '2026-002',
+        firstName: 'Maria',
+        lastName: 'Santos',
+        gradeLevel: 'Grade 8',
+        section: 'B',
+        status: 'Inactive'
+      }
+    ]
+
+    const wrapper = mount(StudentList, {
+      props: {
+        students
+      }
+    })
+
+    await wrapper.find('#statusFilter').setValue('Inactive')
+
+    const rows = wrapper.findAll('tbody tr')
+
+    expect(rows).toHaveLength(1)
+    expect(rows[0].text()).toContain('Maria Santos')
+    expect(rows[0].text()).not.toContain('Juan Dela Cruz')
+  })
 })
