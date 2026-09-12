@@ -27,4 +27,4 @@ jobs:
         run: npm run test:run
 
       - name: Build Vue application
-        run: npm run buildss
+        run: npm run build
